@@ -38,22 +38,25 @@ knowledge2 = And(
 # Puzzle 3
 knowledge3 = And(
     # Each character must either be a Knight or a Knave
-    Or(AKnight, AKnave),  
-    Or(BKnight, BKnave),  
-    Or(CKnight, CKnave),  
+    Or(AKnight, AKnave),
+    Or(BKnight, BKnave),
+    Or(CKnight, CKnave),
     
-    # A's statement, since we know A must be a knight
-    Implication(AKnight, And(Not(AKnave), Not(And(AKnight, AKnave)))),  # A claims to be a knight
-    Implication(AKnave, Not(AKnight)),  # If A is a knave, then they can't be the knight
-
-    # B's statements
-    Implication(BKnight, Or(AKnave)),  # B claims that A said 'I am a knave' if B is a knight
-    Implication(BKnave, Not(Or(AKnave))),  # If B is a knave, then A cannot be a knave
-
-    # Truth about C from B and C's statement
-    Implication(BKnight, CKnight),  # If B is a knight, C is a knave
-    Implication(BKnave, CKnave),     # If B is a knave, C is a knight 
-    Implication(CKnight, AKnight)     # C claims A is a knight, which is true
+    # A's statement: A says "I am a knight" or "I am a knave."
+    Implication(AKnight, AKnight),  # If A is a Knight, then A is a Knight.
+    Implication(AKnave, Not(AKnight)),  # If A is a Knave, then A is not a Knight.
+    
+    # B's first statement: "A said 'I am a knave.'"
+    Implication(BKnight, Biconditional(AKnight, AKnave)),  # If B is a Knight, A's statement must be true.
+    Implication(BKnave, Not(Biconditional(AKnight, AKnave))),  # If B is a Knave, A's statement is false.
+    
+    # B's second statement: "C is a knave."
+    Implication(BKnight, CKnave),  # If B is a Knight, then C is a Knave.
+    Implication(BKnave, CKnight),  # If B is a Knave, then C is a Knight.
+    
+    # C's statement: "A is a Knight."
+    Implication(CKnight, AKnight),  # If C is a Knight, A is a Knight.
+    Implication(CKnave, AKnave)  # If C is a Knave, A is a Knave.
 )
 
 def main():
