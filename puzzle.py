@@ -1,4 +1,3 @@
-
 from logic import *
 
 AKnight = Symbol("A is a Knight")
@@ -18,24 +17,22 @@ knowledge0 = And(
     Implication(AKnave, Not(And(AKnight, AKnave)))  
 )
 
-
-
 # Puzzle 1
 knowledge1 = And(
     Or(AKnight, AKnave),  
     Or(BKnight, BKnave),  
-    Implication(AKnight, And(AKnave, BKnave)),  
-    Implication(AKnave, Not(And(AKnave, BKnave)))  
+    Implication(AKnight, And(AKnave, BKnave)),  # A saying they are both knaves
+    Implication(AKnave, Not(And(AKnave, BKnave)))  # If A is a knave, it's not possible for them to both be knaves
 ) 
 
 # Puzzle 2
 knowledge2 = And(
     Or(AKnight, AKnave),  
     Or(BKnight, BKnave),  
-    Implication(AKnight, Biconditional(AKnight, BKnight)),  
-    Implication(AKnave, Not(Biconditional(AKnight, BKnight))),  
-    Implication(BKnight, Not(Biconditional(AKnight, BKnight))),  
-    Implication(BKnave, Biconditional(AKnight, BKnight))  
+    Implication(AKnight, Biconditional(AKnight, BKnight)),  # If A is a knight, B is a knight
+    Implication(AKnave, Not(Biconditional(AKnight, BKnight))),  # If A is a knave, B is not a knight (knave)
+    Implication(BKnight, Not(Biconditional(AKnight, AKnave))),  # If B is knight, then A is a knave
+    Implication(BKnave, Biconditional(AKnight, AKnave))  # If B is a knave, A is not a knave (so A is a knight)
 )
 
 # Puzzle 3
@@ -43,12 +40,12 @@ knowledge3 = And(
     Or(AKnight, AKnave),  
     Or(BKnight, BKnave),  
     Or(CKnight, CKnave),  
-    Implication(AKnight, Or(AKnight, AKnave)),  # Reflecting what A could say
-    Implication(BKnight, AKnave),            # If B is a knight, A is a knave
-    Implication(BKnave, AKnight),            # If B is a knave, A is a knight
-    Implication(BKnight, CKnight),           # If B is a knight, C is a knave
-    Implication(BKnave, CKnave),             # If B is a knave, C is a knight
-    Implication(CKnight, AKnight)             # If C is a knight, A is a knight
+    Biconditional(AKnight, Or(AKnight, AKnave)),  # A says either
+    Implication(BKnight, AKnave),                    # If B is a knight, then A should be a knave
+    Implication(BKnave, AKnight),                    # If B is a knave, then A should be a knight
+    Implication(BKnight, CKnight),                   # If B is a knight, then C is indicated to be a knave
+    Implication(BKnave, CKnave),                   # If B is a knave, C is supposed to be a knight
+    Implication(CKnight, AKnight)                   # If C is knight, then A must be knight
 )
 
 def main():
