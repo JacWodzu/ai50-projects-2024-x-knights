@@ -29,10 +29,10 @@ knowledge1 = And(
 knowledge2 = And(
     Or(AKnight, AKnave),  
     Or(BKnight, BKnave),  
-    Implication(AKnight, Biconditional(AKnight, BKnight)),  # If A is a knight, B is a knight
-    Implication(AKnave, Not(Biconditional(AKnight, BKnight))),  # If A is a knave, B is not a knight (knave)
-    Implication(BKnight, Not(Biconditional(AKnight, BKnave))),  # If B is knight, then B is a knave
-    Implication(BKnave, Biconditional(AKnight, BKnave))  # If B is a knave, B is not a knave (so A is a knight)
+    Implication(AKnight, Biconditional(AKnight, BKnight)),  
+    Implication(AKnave, Not(Biconditional(AKnight, BKnight))),  
+    Implication(BKnight, Not(Biconditional(AKnight, BKnight))),  
+    Implication(BKnave, Biconditional(AKnight, BKnight))  
 )
 
 # Puzzle 3
