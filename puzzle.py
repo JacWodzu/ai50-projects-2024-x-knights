@@ -1,3 +1,4 @@
+
 from logic import *
 
 AKnight = Symbol("A is a Knight")
@@ -10,52 +11,45 @@ CKnight = Symbol("C is a Knight")
 CKnave = Symbol("C is a Knave")
 
 # Puzzle 0
-# A says "I am both a knight and a knave."
 knowledge0 = And(
-    Or(AKnight, AKnave),  # A is either a knight or a knave
-    Not(And(AKnight, AKnave)),  # A cannot be both a knight and a knave
-    Implication(AKnight, And(AKnight, AKnave)),  # If A is a knight, then this is true
-    Implication(AKnave, Not(And(AKnight, AKnave)))  # If A is a knave, then this can't be true
+    Or(AKnight, AKnave),  
+    Not(And(AKnight, AKnave)),  
+    Implication(AKnight, And(AKnight, AKnave)),  
+    Implication(AKnave, Not(And(AKnight, AKnave)))  
 )
+
+
 
 # Puzzle 1
-# A says "We are both knaves."
-# B says nothing.
 knowledge1 = And(
-    Or(AKnight, AKnave),  # A is either a knight or a knave
-    Or(BKnight, BKnave),  # B is either a knight or a knave
-    Implication(AKnight, Not(AKnave)),  # If A is a knight, A is not a knave
-    Implication(AKnave, And(AKnave, BKnave))  # If A is a knave, A is saying they are both knaves
-)
+    Or(AKnight, AKnave),  
+    Or(BKnight, BKnave),  
+    Implication(AKnight, And(AKnave, BKnave)),  
+    Implication(AKnave, Not(And(AKnave, BKnave)))  
+) 
 
 # Puzzle 2
-# A says "We are the same kind."
-# B says "We are of different kinds."
 knowledge2 = And(
-    Or(AKnight, AKnave),  # A is either a knight or a knave
-    Or(BKnight, BKnave),  # B is either a knight or a knave
-    Implication(AKnight, Biconditional(AKnight, BKnight)),  # If A is a knight, both are the same
-    Implication(AKnave, Not(Biconditional(AKnight, BKnight))),  # If A is a knave, they are not the same
-    Implication(BKnight, Not(Biconditional(AKnight, BKnight))),  # If B is a knight, they must differ
-    Implication(BKnave, Biconditional(AKnight, BKnight))  # If B is a knave, they are the same
+    Or(AKnight, AKnave),  
+    Or(BKnight, BKnave),  
+    Implication(AKnight, Biconditional(AKnight, BKnight)),  
+    Implication(AKnave, Not(Biconditional(AKnight, BKnight))),  
+    Implication(BKnight, Not(Biconditional(AKnight, BKnight))),  
+    Implication(BKnave, Biconditional(AKnight, BKnight))  
 )
 
 # Puzzle 3
-# A says either "I am a knight." or "I am a knave.", but you don't know which.
-# B says "A said 'I am a knave'."
-# B then says "C is a knave."
-# C says "A is a knight."
 knowledge3 = And(
-    Or(AKnight, AKnave),  # A is either a knight or a knave
-    Or(BKnight, BKnave),  # B is either a knight or a knave
-    Or(CKnight, CKnave),  # C is either a knight or a knave
-    Implication(BKnight, AKnave),  # If B is a knight, A must be a knave (according to B's statement)
-    Implication(BKnave, AKnight),  # If B is a knave, A cannot be a knave (B lies about A being a knave)
-    Implication(BKnight, CKnave),  # If B is a knight, then C is a knave
-    Implication(BKnave, Not(CKnave)),  # If B is a knave, then C is a knight
-    Implication(CKnight, AKnight)  # If C is a knight, A must be a knight
+    Or(AKnight, AKnave),  
+    Or(BKnight, BKnave),  
+    Or(CKnight, CKnave),  
+    Implication(AKnight, Or(AKnight, AKnave)),  # Reflecting what A could say
+    Implication(BKnight, AKnave),            # If B is a knight, A is a knave
+    Implication(BKnave, AKnight),            # If B is a knave, A is a knight
+    Implication(BKnight, CKnight),           # If B is a knight, C is a knave
+    Implication(BKnave, CKnave),             # If B is a knave, C is a knight
+    Implication(CKnight, AKnight)             # If C is a knight, A is a knight
 )
-
 
 def main():
     symbols = [AKnight, AKnave, BKnight, BKnave, CKnight, CKnave]
@@ -73,7 +67,6 @@ def main():
             for symbol in symbols:
                 if model_check(knowledge, symbol):
                     print(f"    {symbol}")
-
 
 if __name__ == "__main__":
     main()
