@@ -37,15 +37,16 @@ knowledge2 = And(
 
 # Puzzle 3
 knowledge3 = And(
-    Or(AKnight, AKnave),  
-    Or(BKnight, BKnave),  
-    Or(CKnight, CKnave),  
-    Biconditional(AKnight, Or(AKnight, AKnave)),  # A says either
-    Implication(BKnight, AKnave),                    # If B is a knight, then A should be a knave
-    Implication(BKnave, AKnight),                    # If B is a knave, then A should be a knight
-    Implication(BKnight, CKnight),                   # If B is a knight, then C is indicated to be a knave
-    Implication(BKnave, CKnave),                   # If B is a knave, C is supposed to be a knight
-    Implication(CKnight, AKnight)                   # If C is knight, then A must be knight
+    Or(AKnight, AKnave),  # A is either a knight or a knave
+    Or(BKnight, BKnave),  # B is either a knight or a knave
+    Or(CKnight, CKnave),  # C is either a knight or a knave
+    Implication(AKnight, Or(AKnight, AKnave)),  # A says he is a knight or a knave
+    Implication(AKnave, Not(Or(AKnight, AKnave))),  # A cannot claim both
+    Implication(BKnight, AKnave),  # If B is a knight, A must be a knave
+    Implication(BKnave, AKnight),  # If B is a knave, A must be a knight
+    Implication(BKnight, CKnight),  # If B is a knight, C is a knave
+    Implication(BKnave, CKnave),  # If B is a knave, C is a knight
+    Implication(CKnight, AKnight),  # If C is a knight, A is a knight
 )
 
 def main():
